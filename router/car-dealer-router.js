@@ -16,6 +16,18 @@ router.get('/', (req, res) => {
     })
 })
 
+router.post('/', (req, res) => {
+    !req.body.VIN || !req.body.Make || !req.body.Model || !req.body.Mileage 
+    ? res.status(400).json({ required: 'VIN, Make, Model, Mileage' })
+    : db('cars').insert(req.body, 'id')
+    .then(newBody => {
+        res.status(200).json(newBody)
+    })
+    .catch(() => {
+        res.status(500).json({ error: 'failed operation'})
+    })
+})
 
 
-modules.exports = router;
+
+module.exports = router;
